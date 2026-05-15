@@ -13,13 +13,6 @@ cells:
 
       ### Sebastian Pabon"
     languageId: markdown
-  - kind: 2
-    value: "--DROP TABLE PRODUCTO;\r
-
-      --DROP TABLE FABRICANTE;\r
-
-      DROP TABLE detalle;"
-    languageId: oracle-sql
   - kind: 1
     value: "## Punto 1"
     languageId: markdown
