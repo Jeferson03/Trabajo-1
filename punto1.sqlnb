@@ -38,7 +38,7 @@ cells:
 
       \    codigo_cliente NUMBER(8) NOT NULL,\r
 
-      \    codigo_producto NUMBER(8) NOT NULL\r
+      \    codigo_vendedor NUMBER(8) NOT NULL\r
 
       );\r
 
@@ -50,15 +50,13 @@ cells:
 
       \    codigo_detalle NUMBER(10) PRIMARY KEY,\r
 
-      \    fecha DATE NOT NULL,\r
-
       \    codigo_factura NUMBER(10) NOT NULL,\r
 
       \    codigo_producto NUMBER(8) NOT NULL,\r
 
-      \    unidades_disp NUMBER(6) NOT NULL,\r
+      \    numero_unidades NUMBER(6) NOT NULL,\r
 
-      \    precio_unit NUMBER(8) NOT NULL,\r
+      \    precio_unitario NUMBER(8) NOT NULL,\r
 
       \    CONSTRAINT codigo_factura_fk FOREIGN KEY (codigo_factura) REFERENCES
       factura(codigo_factura)\r
@@ -82,10 +80,19 @@ cells:
 
       AS \r
 
-      \    CURSOR c_facturas IS SELECT * FROM factura ORDER BY codigo_cliente;\r
+      \    CURSOR c_facturas IS SELECT * FROM factura; --ORDER BY
+      codigo_cliente;\r
 
       \    CURSOR c_detalles(p_codigo_fact factura.codigo_factura%TYPE) IS
       SELECT * FROM detalle WHERE codigo_factura = p_codigo_fact;\r
+
+      \r
+
+      \    v_factura factura%ROWTYPE;\r
+
+      \    v_detalle detalle%ROWTYPE;\r
+
+      \    v_valor_total NUMBER(15) := 0;\r
 
       \r
 
@@ -93,9 +100,146 @@ cells:
 
       \    \r
 
-      \    \r
+      \    FOR v_factura IN c_facturas LOOP\r
 
       \r
+
+      \       \r
+
+      \r
+
+      \        FOR v_detalle IN c_detalles(v_factura.codigo_factura) LOOP\r
+
+      \            \r
+
+      \            v_valor_total := v_valor_total + v_detalle.numero_unidades *
+      v_detalle.precio_unitario;\r
+
+      \r
+
+      \        END LOOP;\r
+
+      \    \r
+
+      \        DBMS_OUTPUT.PUT_LINE('  INFORMACION DE LA FACTURA ');\r
+
+      \        /*DBMS_OUTPUT.PUT_LINE('codigo de la factura: ' ||
+      v_factura.codigo_factura || '  '\r
+
+      \        || 'fecha: ' || v_factura.fecha || '  '\r
+
+      \        || 'codigo del cliente: ' || v_factura.codigo_cliente || '  '\r
+
+      \        || 'codigo del vendedor: ' || v_factura.codigo_vendedor || '  '\r
+
+      \        || 'valor total: ' || v_valor_total\r
+
+      \        );*/ \r
+
+      \        DBMS_OUTPUT.PUT_LINE('codigo de la factura: ' ||
+      v_factura.codigo_factura);\r
+
+      \        DBMS_OUTPUT.PUT_LINE('fecha: ' || v_factura.fecha);\r
+
+      \        DBMS_OUTPUT.PUT_LINE('codigo del cliente: ' ||
+      v_factura.codigo_cliente);\r
+
+      \        DBMS_OUTPUT.PUT_LINE('codigo del vendedor: ' ||
+      v_factura.codigo_vendedor);\r
+
+      \        DBMS_OUTPUT.PUT_LINE('valor total: ' || v_valor_total);\r
+
+      \        DBMS_OUTPUT.PUT_LINE('');\r
+
+      \r
+
+      \    END LOOP;\r
+
+      \r
+
+      END;"
+    languageId: oracle-sql
+  - kind: 1
+    value: "#### Algunas inserciones de prueba"
+    languageId: markdown
+  - kind: 2
+    value: "-- INSERTS PARA FACTURA\r
+
+      INSERT INTO factura VALUES (1001, TO_DATE('2026-05-01','YYYY-MM-DD'),
+      2001, 3001);\r
+
+      INSERT INTO factura VALUES (1002, TO_DATE('2026-05-02','YYYY-MM-DD'),
+      2002, 3002);\r
+
+      INSERT INTO factura VALUES (1003, TO_DATE('2026-05-03','YYYY-MM-DD'),
+      2003, 3001);\r
+
+      INSERT INTO factura VALUES (1004, TO_DATE('2026-05-04','YYYY-MM-DD'),
+      2004, 3003);\r
+
+      INSERT INTO factura VALUES (1005, TO_DATE('2026-05-05','YYYY-MM-DD'),
+      2005, 3002);\r
+
+      \r
+
+      \r
+
+      -- INSERTS PARA DETALLE\r
+
+      -- Factura 1001\r
+
+      INSERT INTO detalle VALUES (1, 1001, 501, 2, 15000);\r
+
+      INSERT INTO detalle VALUES (2, 1001, 502, 1, 25000);\r
+
+      INSERT INTO detalle VALUES (3, 1001, 503, 5, 5000);\r
+
+      \r
+
+      -- Factura 1002\r
+
+      INSERT INTO detalle VALUES (4, 1002, 504, 3, 12000);\r
+
+      INSERT INTO detalle VALUES (5, 1002, 505, 2, 18000);\r
+
+      INSERT INTO detalle VALUES (6, 1002, 506, 1, 30000);\r
+
+      \r
+
+      -- Factura 1003\r
+
+      INSERT INTO detalle VALUES (7, 1003, 507, 4, 8000);\r
+
+      INSERT INTO detalle VALUES (8, 1003, 508, 2, 22000);\r
+
+      INSERT INTO detalle VALUES (9, 1003, 509, 6, 4000);\r
+
+      \r
+
+      -- Factura 1004\r
+
+      INSERT INTO detalle VALUES (10, 1004, 510, 1, 50000);\r
+
+      INSERT INTO detalle VALUES (11, 1004, 511, 2, 17000);\r
+
+      INSERT INTO detalle VALUES (12, 1004, 512, 3, 9000);\r
+
+      \r
+
+      -- Factura 1005\r
+
+      INSERT INTO detalle VALUES (13, 1005, 513, 5, 6000);\r
+
+      INSERT INTO detalle VALUES (14, 1005, 514, 2, 21000);\r
+
+      INSERT INTO detalle VALUES (15, 1005, 515, 1, 45000);"
+    languageId: oracle-sql
+  - kind: 2
+    value: "BEGIN\r
+
+      \r
+
+      \    ONLY_CURSORS;\r
 
       END;"
     languageId: oracle-sql
