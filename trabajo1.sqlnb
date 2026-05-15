@@ -1,0 +1,108 @@
+cells:
+  - kind: 1
+    value: "# TRABAJO 1\r\n"
+    languageId: markdown
+  - kind: 1
+    value: "### Universidad Nacional de Colombia\r
+
+      ### Materia: Bases de Datos II\r
+
+      ### Jeferson Garcia Angel\r
+
+      ### Jhofred Camacho\r
+
+      ### Sebastian Pabon"
+    languageId: markdown
+  - kind: 2
+    value: "--DROP TABLE PRODUCTO;\r
+
+      --DROP TABLE FABRICANTE;\r
+
+      DROP TABLE detalle;"
+    languageId: oracle-sql
+  - kind: 1
+    value: "## Punto 1"
+    languageId: markdown
+  - kind: 1
+    value: "#### Cree una tabla **Factura** con atributos: código de la factura
+      (clave primaria), fecha,codigo cliente y código del vendedor. Y una tabla
+      **Detalle** con atributos: código del detalle, código de la factura (clave
+      foránea hacia factura), código del producto, número de unidades y precio
+      unitario."
+    languageId: markdown
+  - kind: 2
+    value: "DROP TABLE detalle; -- Si es la primera vez que corre el codigo esta
+      linea suelta error pq no existe el if exists en el 21c \r
+
+      DROP TABLE factura; -- Si es la primera vez que corre el codigo esta linea
+      suelta error pq no existe el if exists en el 21c \r
+
+      CREATE TABLE factura (\r
+
+      \    codigo_factura NUMBER(10) PRIMARY KEY,\r
+
+      \    fecha DATE NOT NULL,\r
+
+      \    codigo_cliente NUMBER(8) NOT NULL,\r
+
+      \    codigo_producto NUMBER(8) NOT NULL\r
+
+      );\r
+
+      \r
+
+      \r
+
+      CREATE TABLE detalle (\r
+
+      \    codigo_detalle NUMBER(10) PRIMARY KEY,\r
+
+      \    fecha DATE NOT NULL,\r
+
+      \    codigo_factura NUMBER(10) NOT NULL,\r
+
+      \    codigo_producto NUMBER(8) NOT NULL,\r
+
+      \    unidades_disp NUMBER(6) NOT NULL,\r
+
+      \    precio_unit NUMBER(8) NOT NULL,\r
+
+      \    CONSTRAINT codigo_factura_fk FOREIGN KEY (codigo_factura) REFERENCES
+      factura(codigo_factura)\r
+
+      )\r
+
+      \r\n"
+    languageId: oracle-sql
+  - kind: 2
+    value: SELECT * FROM FACTURA;
+    languageId: oracle-sql
+  - kind: 2
+    value: SELECT * FROM detalle;
+    languageId: oracle-sql
+  - kind: 1
+    value: "#### Ahora creemos un procedimiento que se encargara de solucionar el
+      item a) del punto 1 del trabajo"
+    languageId: markdown
+  - kind: 2
+    value: "CREATE OR REPLACE PROCEDURE only_cursors\r
+
+      AS \r
+
+      \    CURSOR c_facturas IS SELECT * FROM factura ORDER BY codigo_cliente;\r
+
+      \    CURSOR c_detalles(p_codigo_fact factura.codigo_factura%TYPE) IS
+      SELECT * FROM detalle WHERE codigo_factura = p_codigo_fact;\r
+
+      \r
+
+      BEGIN \r
+
+      \    \r
+
+      \    \r
+
+      \r
+
+      END;"
+    languageId: oracle-sql
