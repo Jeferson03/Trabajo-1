@@ -65,12 +65,6 @@ cells:
 
       \r\n"
     languageId: oracle-sql
-  - kind: 2
-    value: SELECT * FROM FACTURA;
-    languageId: oracle-sql
-  - kind: 2
-    value: SELECT * FROM detalle;
-    languageId: oracle-sql
   - kind: 1
     value: "#### Ahora creemos un procedimiento que se encargara de solucionar el
       item a) del punto 1 del trabajo"
@@ -94,9 +88,17 @@ cells:
 
       \    v_valor_total NUMBER(15) := 0;\r
 
+      \    v_tiempo_inicio NUMBER;\r
+
+      \    v_tiempo_fin NUMBER;\r
+
       \r
 
       BEGIN \r
+
+      \r
+
+      \    v_tiempo_inicio := DBMS_UTILITY.GET_TIME;\r
 
       \    \r
 
@@ -121,22 +123,23 @@ cells:
 
       \    \r
 
-      \        DBMS_OUTPUT.PUT_LINE('  INFORMACION DE LA FACTURA ');\r
+      \        DBMS_OUTPUT.PUT_LINE('  INFORMACION DE LA FACTURA ' ||\r
+
+      \            'codigo de la factura: ' || v_factura.codigo_factura ||\r
+
+      \            'fecha: ' || v_factura.fecha ||\r
+
+      \            'codigo del cliente: ' || v_factura.codigo_cliente ||\r
+
+      \            'codigo del vendedor: ' || v_factura.codigo_vendedor ||\r
+
+      \            'valor total: ' || v_valor_total ||\r
+
+      \            ' '\r
+
+      \        );\r
 
       \        /*DBMS_OUTPUT.PUT_LINE('codigo de la factura: ' ||
-      v_factura.codigo_factura || '  '\r
-
-      \        || 'fecha: ' || v_factura.fecha || '  '\r
-
-      \        || 'codigo del cliente: ' || v_factura.codigo_cliente || '  '\r
-
-      \        || 'codigo del vendedor: ' || v_factura.codigo_vendedor || '  '\r
-
-      \        || 'valor total: ' || v_valor_total\r
-
-      \        );*/ \r
-
-      \        DBMS_OUTPUT.PUT_LINE('codigo de la factura: ' ||
       v_factura.codigo_factura);\r
 
       \        DBMS_OUTPUT.PUT_LINE('fecha: ' || v_factura.fecha);\r
@@ -149,7 +152,7 @@ cells:
 
       \        DBMS_OUTPUT.PUT_LINE('valor total: ' || v_valor_total);\r
 
-      \        DBMS_OUTPUT.PUT_LINE('');\r
+      \        DBMS_OUTPUT.PUT_LINE('');*/\r
 
       \r
 
@@ -157,87 +160,279 @@ cells:
 
       \r
 
+      \    v_tiempo_fin := DBMS_UTILITY.GET_TIME;\r
+
+      \    DBMS_OUTPUT.PUT_LINE('TIEMPO EMPLEADO CONSULTA: ' || (v_tiempo_fin -
+      v_tiempo_inicio)/100 || ' segundos');\r
+
+      \r
+
+      \    EXCEPTION\r
+
+      \        WHEN others THEN\r
+
+      \            DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);\r
+
+      \r
+
+      \r
+
       END;"
     languageId: oracle-sql
   - kind: 1
-    value: "#### Algunas inserciones de prueba"
+    value: "#### Ahora creemos un procedimiento que se encargara de las inserciones "
     languageId: markdown
   - kind: 2
-    value: "-- INSERTS PARA FACTURA\r
+    value: "CREATE OR REPLACE PROCEDURE rellenado_tablas(p_cantidad_facturas IN
+      NUMBER, p_cantidad_detalles IN NUMBER)\r
 
-      INSERT INTO factura VALUES (1001, TO_DATE('2026-05-01','YYYY-MM-DD'),
-      2001, 3001);\r
+      AS\r
 
-      INSERT INTO factura VALUES (1002, TO_DATE('2026-05-02','YYYY-MM-DD'),
-      2002, 3002);\r
+      \    v_codigo_factura NUMBER := 1000;\r
 
-      INSERT INTO factura VALUES (1003, TO_DATE('2026-05-03','YYYY-MM-DD'),
-      2003, 3001);\r
+      \    v_codigo_detalle NUMBER := 1;\r
 
-      INSERT INTO factura VALUES (1004, TO_DATE('2026-05-04','YYYY-MM-DD'),
-      2004, 3003);\r
-
-      INSERT INTO factura VALUES (1005, TO_DATE('2026-05-05','YYYY-MM-DD'),
-      2005, 3002);\r
+      BEGIN\r
 
       \r
 
-      \r
+      \    -- INSERTAR 1000 FACTURAS\r
 
-      -- INSERTS PARA DETALLE\r
+      \    FOR i IN 1..p_cantidad_facturas+1 LOOP\r
 
-      -- Factura 1001\r
+      \        \r
 
-      INSERT INTO detalle VALUES (1, 1001, 501, 2, 15000);\r
+      \        INSERT INTO factura (\r
 
-      INSERT INTO detalle VALUES (2, 1001, 502, 1, 25000);\r
+      \            codigo_factura,\r
 
-      INSERT INTO detalle VALUES (3, 1001, 503, 5, 5000);\r
+      \            fecha,\r
 
-      \r
+      \            codigo_cliente,\r
 
-      -- Factura 1002\r
+      \            codigo_vendedor\r
 
-      INSERT INTO detalle VALUES (4, 1002, 504, 3, 12000);\r
+      \        )\r
 
-      INSERT INTO detalle VALUES (5, 1002, 505, 2, 18000);\r
+      \        VALUES (\r
 
-      INSERT INTO detalle VALUES (6, 1002, 506, 1, 30000);\r
+      \            v_codigo_factura,\r
 
-      \r
+      \            SYSDATE - MOD(i,365),\r
 
-      -- Factura 1003\r
+      \            TRUNC(DBMS_RANDOM.VALUE(1000,9999)),\r
 
-      INSERT INTO detalle VALUES (7, 1003, 507, 4, 8000);\r
+      \            TRUNC(DBMS_RANDOM.VALUE(200,500))\r
 
-      INSERT INTO detalle VALUES (8, 1003, 508, 2, 22000);\r
-
-      INSERT INTO detalle VALUES (9, 1003, 509, 6, 4000);\r
+      \        );\r
 
       \r
 
-      -- Factura 1004\r
+      \        -- INSERTAR 10 DETALLES POR FACTURA\r
 
-      INSERT INTO detalle VALUES (10, 1004, 510, 1, 50000);\r
+      \        FOR j IN 1..p_cantidad_detalles+1 LOOP\r
 
-      INSERT INTO detalle VALUES (11, 1004, 511, 2, 17000);\r
+      \            \r
 
-      INSERT INTO detalle VALUES (12, 1004, 512, 3, 9000);\r
+      \            INSERT INTO detalle (\r
+
+      \                codigo_detalle,\r
+
+      \                codigo_factura,\r
+
+      \                codigo_producto,\r
+
+      \                numero_unidades,\r
+
+      \                precio_unitario\r
+
+      \            )\r
+
+      \            VALUES (\r
+
+      \                v_codigo_detalle,\r
+
+      \                v_codigo_factura,\r
+
+      \                TRUNC(DBMS_RANDOM.VALUE(1,500)),\r
+
+      \                TRUNC(DBMS_RANDOM.VALUE(1,10)),\r
+
+      \                TRUNC(DBMS_RANDOM.VALUE(5000,100000))\r
+
+      \            );\r
 
       \r
 
-      -- Factura 1005\r
+      \            v_codigo_detalle := v_codigo_detalle + 1;\r
 
-      INSERT INTO detalle VALUES (13, 1005, 513, 5, 6000);\r
+      \r
 
-      INSERT INTO detalle VALUES (14, 1005, 514, 2, 21000);\r
+      \        END LOOP;\r
 
-      INSERT INTO detalle VALUES (15, 1005, 515, 1, 45000);"
+      \r
+
+      \        v_codigo_factura := v_codigo_factura + 1;\r
+
+      \r
+
+      \    END LOOP;\r
+
+      \r
+
+      \    COMMIT;\r
+
+      \r
+
+      \    DBMS_OUTPUT.PUT_LINE('Se insertaron '||
+      p_cantidad_facturas  ||'facturas y '||
+      (p_cantidad_facturas*p_cantidad_detalles) ||' detalles.');\r
+
+      \r
+
+      END;\r
+
+      /"
     languageId: oracle-sql
   - kind: 2
-    value: "BEGIN\r
+    value: SET SERVEROUTPUT ON SIZE UNLIMITED;
+    languageId: oracle-sql
+  - kind: 1
+    value: "#### Ahora carguemos las tablas con 1.000 facturas y 10.000 detalles (10
+      detalles por factura)"
+    languageId: markdown
+  - kind: 2
+    value: "\r
+
+      DECLARE\r
+
+      \    v_cantidad_facturas NUMBER(8) := 1000;\r
+
+      \    v_cantidad_detalles NUMBER(10) := 10;\r
 
       \r
+
+      \r
+
+      BEGIN\r
+
+      \    RELLENADO_TABLAS(v_cantidad_facturas, v_cantidad_detalles);\r
+
+      \    ONLY_CURSORS;\r
+
+      END;"
+    languageId: oracle-sql
+  - kind: 1
+    value: "#### Ahora carguemos las tablas con 10.000 facturas y 100.000 detalles
+      (10 detalles por factura)"
+    languageId: markdown
+  - kind: 2
+    value: "TRUNCATE TABLE detalle;\r
+
+      TRUNCATE TABLE factura;\r
+
+      \r
+
+      DECLARE\r
+
+      \    v_cantidad_facturas NUMBER(8) := 10000;\r
+
+      \    v_cantidad_detalles NUMBER(10) := 10;\r
+
+      \r
+
+      \r
+
+      BEGIN\r
+
+      \    RELLENADO_TABLAS(v_cantidad_facturas, v_cantidad_detalles);\r
+
+      \    ONLY_CURSORS;\r
+
+      END;"
+    languageId: oracle-sql
+  - kind: 1
+    value: "#### Ahora carguemos las tablas con 100.000 facturas y 1.000.000 de
+      detalles (10 detalles por factura)"
+    languageId: markdown
+  - kind: 2
+    value: "TRUNCATE TABLE detalle;\r
+
+      TRUNCATE TABLE factura;\r
+
+      \r
+
+      DECLARE\r
+
+      \    v_cantidad_facturas NUMBER(8) := 100000;\r
+
+      \    v_cantidad_detalles NUMBER(10) := 10;\r
+
+      \r
+
+      \r
+
+      BEGIN\r
+
+      \    RELLENADO_TABLAS(v_cantidad_facturas, v_cantidad_detalles);\r
+
+      \    ONLY_CURSORS;\r
+
+      END;"
+    languageId: oracle-sql
+  - kind: 1
+    value: "#### Ahora carguemos las tablas con 1.000.000 facturas y 10.000.000
+      detalles (10 detalles por factura)"
+    languageId: markdown
+  - kind: 2
+    value: "TRUNCATE TABLE detalle;\r
+
+      TRUNCATE TABLE factura;\r
+
+      \r
+
+      DECLARE\r
+
+      \    v_cantidad_facturas NUMBER(8) := 1000000;\r
+
+      \    v_cantidad_detalles NUMBER(10) := 10;\r
+
+      \r
+
+      \r
+
+      BEGIN\r
+
+      \    RELLENADO_TABLAS(v_cantidad_facturas, v_cantidad_detalles);\r
+
+      \    ONLY_CURSORS;\r
+
+      END;"
+    languageId: oracle-sql
+  - kind: 1
+    value: "#### Ahora carguemos las tablas con 10.000.000 facturas y 100.000.000
+      detalles (10 detalles por factura)"
+    languageId: markdown
+  - kind: 2
+    value: "TRUNCATE TABLE detalle;\r
+
+      TRUNCATE TABLE factura;\r
+
+      \r
+
+      DECLARE\r
+
+      \    v_cantidad_facturas NUMBER(8) := 10000000;\r
+
+      \    v_cantidad_detalles NUMBER(10) := 10;\r
+
+      \r
+
+      \r
+
+      BEGIN\r
+
+      \    RELLENADO_TABLAS(v_cantidad_facturas, v_cantidad_detalles);\r
 
       \    ONLY_CURSORS;\r
 
