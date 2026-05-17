@@ -245,7 +245,9 @@ cells:
     languageId: oracle-sql
   - kind: 2
     value: |-
-      CREATE OR REPLACE PROCEDURE bulk_collect_facturas
+      CREATE OR REPLACE PROCEDURE bulk_collect_facturas(
+          p_limite IN PLS_INTEGER DEFAULT 5
+      )
       AS
           -- Cursor para traer todas las facturas
           CURSOR c_facturas IS
@@ -273,7 +275,7 @@ cells:
           LOOP
 
               -- Cargar facturas por lotes de 5 registros
-              FETCH c_facturas BULK COLLECT INTO v_facturas LIMIT 5;
+              FETCH c_facturas BULK COLLECT INTO v_facturas LIMIT p_limite;
 
               -- Salir cuando no haya más datos
               EXIT WHEN v_facturas.COUNT = 0;
@@ -323,6 +325,6 @@ cells:
   - kind: 2
     value: |-
       BEGIN
-          bulk_collect_facturas;
+          bulk_collect_facturas(10);
       END;
     languageId: oracle-sql
