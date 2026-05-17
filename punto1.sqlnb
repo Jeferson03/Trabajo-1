@@ -438,3 +438,173 @@ cells:
 
       END;"
     languageId: oracle-sql
+  - kind: 2
+    value: |-
+      CREATE OR REPLACE PROCEDURE bulk_collect_facturas(
+          p_limite IN PLS_INTEGER DEFAULT 5
+      )
+      AS
+          -- Cursor para traer todas las facturas
+          CURSOR c_facturas IS
+              SELECT * FROM factura;
+
+          -- Cursor para traer los detalles de una factura
+          CURSOR c_detalles(p_codigo_fact factura.codigo_factura%TYPE) IS
+              SELECT *
+              FROM detalle
+              WHERE codigo_factura = p_codigo_fact;
+
+          -- Tipo arreglo para almacenar facturas
+          TYPE t_facturas IS TABLE OF factura%ROWTYPE;
+
+          -- Variable arreglo
+          v_facturas t_facturas;
+
+          -- Variables auxiliares
+          v_valor_total NUMBER(15,2);
+
+      BEGIN
+
+          OPEN c_facturas;
+
+          LOOP
+
+              -- Cargar facturas por lotes de 5 registros
+              FETCH c_facturas BULK COLLECT INTO v_facturas LIMIT p_limite;
+
+              -- Salir cuando no haya más datos
+              EXIT WHEN v_facturas.COUNT = 0;
+
+              -- Recorrer el arreglo
+              FOR i IN 1 .. v_facturas.COUNT LOOP
+
+                  v_valor_total := 0;
+
+                  -- Buscar detalles de la factura actual
+                  FOR v_detalle IN c_detalles(v_facturas(i).codigo_factura) LOOP
+
+                      v_valor_total := v_valor_total +
+                                        (v_detalle.numero_unidades *
+                                         v_detalle.precio_unitario);
+
+                  END LOOP;
+
+                  -- Imprimir información
+                  DBMS_OUTPUT.PUT_LINE(' INFORMACION DE LA FACTURA ');
+                  DBMS_OUTPUT.PUT_LINE('codigo de la factura: ' ||
+                                        v_facturas(i).codigo_factura);
+
+                  DBMS_OUTPUT.PUT_LINE('fecha: ' ||
+                                        v_facturas(i).fecha);
+
+                  DBMS_OUTPUT.PUT_LINE('codigo del cliente: ' ||
+                                        v_facturas(i).codigo_cliente);
+
+                  DBMS_OUTPUT.PUT_LINE('codigo del vendedor: ' ||
+                                        v_facturas(i).codigo_vendedor);
+
+                  DBMS_OUTPUT.PUT_LINE('valor total: ' ||
+                                        v_valor_total);
+
+                  DBMS_OUTPUT.PUT_LINE('----------------------------------');
+
+              END LOOP;
+
+          END LOOP;
+
+          CLOSE c_facturas;
+
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
+          bulk_collect_facturas(10);
+      END;
+    languageId: oracle-sql
+  - kind: 1
+    value: "## Limpiando datos"
+    languageId: markdown
+  - kind: 2
+    value: |-
+      TRUNCATE TABLE detalle;
+      TRUNCATE TABLE factura;
+
+      DROP SEQUENCE seq_factura;
+      DROP SEQUENCE seq_detalle;
+
+      CREATE SEQUENCE seq_factura START WITH 1;
+      CREATE SEQUENCE seq_detalle START WITH 1;
+    languageId: oracle-sql
+  - kind: 1
+    value: "## Cargando datos aleatorios"
+    languageId: markdown
+  - kind: 2
+    value: |-
+      CREATE OR REPLACE PROCEDURE cargar_datos(
+          p_num_facturas IN NUMBER
+      )
+      IS
+      BEGIN
+
+          -- Insertar facturas
+          FOR i IN 1 .. p_num_facturas LOOP
+
+              INSERT INTO factura (
+                  codigo_factura,
+                  fecha,
+                  codigo_cliente,
+                  codigo_vendedor
+              )
+              VALUES (
+                  seq_factura.NEXTVAL,
+                  TRUNC(SYSDATE - DBMS_RANDOM.VALUE(1, 365)),
+                  TRUNC(DBMS_RANDOM.VALUE(1, 10000)),
+                  TRUNC(DBMS_RANDOM.VALUE(1, 1000))
+              );
+
+          END LOOP;
+
+          COMMIT;
+
+          -- Insertar detalles
+          FOR f IN (
+              SELECT codigo_factura
+              FROM factura
+              ORDER BY codigo_factura
+          ) LOOP
+
+              FOR j IN 1 .. 10 LOOP
+
+                  INSERT INTO detalle (
+                      codigo_detalle,
+                      codigo_factura,
+                      codigo_producto,
+                      numero_unidades,
+                      precio_unitario
+                  )
+                  VALUES (
+                      seq_detalle.NEXTVAL,
+                      f.codigo_factura,
+                      TRUNC(DBMS_RANDOM.VALUE(1, 5000)),
+                      TRUNC(DBMS_RANDOM.VALUE(1, 20)),
+                      TRUNC(DBMS_RANDOM.VALUE(1000, 50000))
+                  );
+
+              END LOOP;
+
+          END LOOP;
+
+          COMMIT;
+
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
+          cargar_datos(1000);
+      END;
+      /
+    languageId: oracle-sql
