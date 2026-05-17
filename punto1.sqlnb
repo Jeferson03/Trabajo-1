@@ -294,6 +294,9 @@ cells:
 
       /"
     languageId: oracle-sql
+  - kind: 1
+    value: "#### Para que el DBMS_OUTPUT tenga mas espacion en el buffer"
+    languageId: markdown
   - kind: 2
     value: SET SERVEROUTPUT ON SIZE UNLIMITED;
     languageId: oracle-sql
