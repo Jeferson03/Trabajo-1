@@ -328,3 +328,88 @@ cells:
           bulk_collect_facturas(10);
       END;
     languageId: oracle-sql
+  - kind: 1
+    value: "## Limpiando datos"
+    languageId: markdown
+  - kind: 2
+    value: |-
+      TRUNCATE TABLE detalle;
+      TRUNCATE TABLE factura;
+
+      DROP SEQUENCE seq_factura;
+      DROP SEQUENCE seq_detalle;
+
+      CREATE SEQUENCE seq_factura START WITH 1;
+      CREATE SEQUENCE seq_detalle START WITH 1;
+    languageId: oracle-sql
+  - kind: 1
+    value: "## Cargando datos aleatorios"
+    languageId: markdown
+  - kind: 2
+    value: |-
+      CREATE OR REPLACE PROCEDURE cargar_datos(
+          p_num_facturas IN NUMBER
+      )
+      IS
+      BEGIN
+
+          -- Insertar facturas
+          FOR i IN 1 .. p_num_facturas LOOP
+
+              INSERT INTO factura (
+                  codigo_factura,
+                  fecha,
+                  codigo_cliente,
+                  codigo_vendedor
+              )
+              VALUES (
+                  seq_factura.NEXTVAL,
+                  TRUNC(SYSDATE - DBMS_RANDOM.VALUE(1, 365)),
+                  TRUNC(DBMS_RANDOM.VALUE(1, 10000)),
+                  TRUNC(DBMS_RANDOM.VALUE(1, 1000))
+              );
+
+          END LOOP;
+
+          COMMIT;
+
+          -- Insertar detalles
+          FOR f IN (
+              SELECT codigo_factura
+              FROM factura
+              ORDER BY codigo_factura
+          ) LOOP
+
+              FOR j IN 1 .. 10 LOOP
+
+                  INSERT INTO detalle (
+                      codigo_detalle,
+                      codigo_factura,
+                      codigo_producto,
+                      numero_unidades,
+                      precio_unitario
+                  )
+                  VALUES (
+                      seq_detalle.NEXTVAL,
+                      f.codigo_factura,
+                      TRUNC(DBMS_RANDOM.VALUE(1, 5000)),
+                      TRUNC(DBMS_RANDOM.VALUE(1, 20)),
+                      TRUNC(DBMS_RANDOM.VALUE(1000, 50000))
+                  );
+
+              END LOOP;
+
+          END LOOP;
+
+          COMMIT;
+
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
+          cargar_datos(1000);
+      END;
+      /
+    languageId: oracle-sql
