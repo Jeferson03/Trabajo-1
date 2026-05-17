@@ -243,3 +243,86 @@ cells:
 
       END;"
     languageId: oracle-sql
+  - kind: 2
+    value: |-
+      CREATE OR REPLACE PROCEDURE bulk_collect_facturas
+      AS
+          -- Cursor para traer todas las facturas
+          CURSOR c_facturas IS
+              SELECT * FROM factura;
+
+          -- Cursor para traer los detalles de una factura
+          CURSOR c_detalles(p_codigo_fact factura.codigo_factura%TYPE) IS
+              SELECT *
+              FROM detalle
+              WHERE codigo_factura = p_codigo_fact;
+
+          -- Tipo arreglo para almacenar facturas
+          TYPE t_facturas IS TABLE OF factura%ROWTYPE;
+
+          -- Variable arreglo
+          v_facturas t_facturas;
+
+          -- Variables auxiliares
+          v_valor_total NUMBER(15,2);
+
+      BEGIN
+
+          OPEN c_facturas;
+
+          LOOP
+
+              -- Cargar facturas por lotes de 5 registros
+              FETCH c_facturas BULK COLLECT INTO v_facturas LIMIT 5;
+
+              -- Salir cuando no haya más datos
+              EXIT WHEN v_facturas.COUNT = 0;
+
+              -- Recorrer el arreglo
+              FOR i IN 1 .. v_facturas.COUNT LOOP
+
+                  v_valor_total := 0;
+
+                  -- Buscar detalles de la factura actual
+                  FOR v_detalle IN c_detalles(v_facturas(i).codigo_factura) LOOP
+
+                      v_valor_total := v_valor_total +
+                                        (v_detalle.numero_unidades *
+                                         v_detalle.precio_unitario);
+
+                  END LOOP;
+
+                  -- Imprimir información
+                  DBMS_OUTPUT.PUT_LINE(' INFORMACION DE LA FACTURA ');
+                  DBMS_OUTPUT.PUT_LINE('codigo de la factura: ' ||
+                                        v_facturas(i).codigo_factura);
+
+                  DBMS_OUTPUT.PUT_LINE('fecha: ' ||
+                                        v_facturas(i).fecha);
+
+                  DBMS_OUTPUT.PUT_LINE('codigo del cliente: ' ||
+                                        v_facturas(i).codigo_cliente);
+
+                  DBMS_OUTPUT.PUT_LINE('codigo del vendedor: ' ||
+                                        v_facturas(i).codigo_vendedor);
+
+                  DBMS_OUTPUT.PUT_LINE('valor total: ' ||
+                                        v_valor_total);
+
+                  DBMS_OUTPUT.PUT_LINE('----------------------------------');
+
+              END LOOP;
+
+          END LOOP;
+
+          CLOSE c_facturas;
+
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
+          bulk_collect_facturas;
+      END;
+    languageId: oracle-sql
