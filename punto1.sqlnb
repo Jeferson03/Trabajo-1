@@ -438,6 +438,9 @@ cells:
 
       END;"
     languageId: oracle-sql
+  - kind: 1
+    value: "## Punto B"
+    languageId: markdown
   - kind: 2
     value: |-
       CREATE OR REPLACE PROCEDURE bulk_collect_facturas(
