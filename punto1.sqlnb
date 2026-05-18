@@ -74,8 +74,7 @@ cells:
 
       AS \r
 
-      \    CURSOR c_facturas IS SELECT * FROM factura; --ORDER BY
-      codigo_cliente;\r
+      \    CURSOR c_facturas IS SELECT * FROM factura; \r
 
       \    CURSOR c_detalles(p_codigo_fact factura.codigo_factura%TYPE) IS
       SELECT * FROM detalle WHERE codigo_factura = p_codigo_fact;\r
@@ -123,36 +122,22 @@ cells:
 
       \    \r
 
-      \        DBMS_OUTPUT.PUT_LINE('  INFORMACION DE LA FACTURA ' ||\r
+      \        DBMS_OUTPUT.PUT_LINE('  INFORMACION DE LA FACTURA ' || ' ' ||\r
 
-      \            'codigo de la factura: ' || v_factura.codigo_factura ||\r
+      \            'codigo de la factura: ' || v_factura.codigo_factura || ' '
+      ||\r
 
-      \            'fecha: ' || v_factura.fecha ||\r
+      \            'fecha: ' || v_factura.fecha || ' ' ||\r
 
-      \            'codigo del cliente: ' || v_factura.codigo_cliente ||\r
+      \            'codigo del cliente: ' || v_factura.codigo_cliente || ' '
+      ||\r
 
-      \            'codigo del vendedor: ' || v_factura.codigo_vendedor ||\r
+      \            'codigo del vendedor: ' || v_factura.codigo_vendedor || ' '
+      ||\r
 
-      \            'valor total: ' || v_valor_total ||\r
-
-      \            ' '\r
+      \            'valor total: ' || v_valor_total \r
 
       \        );\r
-
-      \        /*DBMS_OUTPUT.PUT_LINE('codigo de la factura: ' ||
-      v_factura.codigo_factura);\r
-
-      \        DBMS_OUTPUT.PUT_LINE('fecha: ' || v_factura.fecha);\r
-
-      \        DBMS_OUTPUT.PUT_LINE('codigo del cliente: ' ||
-      v_factura.codigo_cliente);\r
-
-      \        DBMS_OUTPUT.PUT_LINE('codigo del vendedor: ' ||
-      v_factura.codigo_vendedor);\r
-
-      \        DBMS_OUTPUT.PUT_LINE('valor total: ' || v_valor_total);\r
-
-      \        DBMS_OUTPUT.PUT_LINE('');*/\r
 
       \r
 
@@ -196,7 +181,7 @@ cells:
 
       \r
 
-      \    -- INSERTAR 1000 FACTURAS\r
+      \    -- INSERTAR n FACTURAS\r
 
       \    FOR i IN 1..p_cantidad_facturas+1 LOOP\r
 
@@ -228,7 +213,7 @@ cells:
 
       \r
 
-      \        -- INSERTAR 10 DETALLES POR FACTURA\r
+      \        -- INSERTAR m DETALLES POR FACTURA\r
 
       \        FOR j IN 1..p_cantidad_detalles+1 LOOP\r
 
@@ -284,18 +269,16 @@ cells:
 
       \r
 
-      \    DBMS_OUTPUT.PUT_LINE('Se insertaron '||
-      p_cantidad_facturas  ||'facturas y '||
-      (p_cantidad_facturas*p_cantidad_detalles) ||' detalles.');\r
+      \    DBMS_OUTPUT.PUT_LINE('Se insertaron '|| p_cantidad_facturas  ||'
+      facturas y '|| (p_cantidad_facturas*p_cantidad_detalles) ||'
+      detalles.');\r
 
       \r
 
-      END;\r
-
-      /"
+      END;"
     languageId: oracle-sql
   - kind: 1
-    value: "#### Para que el DBMS_OUTPUT tenga mas espacion en el buffer"
+    value: "#### Para que el DBMS_OUTPUT tenga mas espacio en el buffer"
     languageId: markdown
   - kind: 2
     value: SET SERVEROUTPUT ON SIZE UNLIMITED;
