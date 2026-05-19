@@ -430,15 +430,20 @@ cells:
   - kind: 2
     value: |-
       CREATE OR REPLACE PROCEDURE bulk_collect_facturas(
-          p_limite IN PLS_INTEGER DEFAULT 5
+          p_limite     IN PLS_INTEGER DEFAULT 5,
+          p_outputline IN BOOLEAN DEFAULT TRUE
       )
       AS
+
           -- Cursor para traer todas las facturas
           CURSOR c_facturas IS
-              SELECT * FROM factura;
+              SELECT *
+              FROM factura;
 
           -- Cursor para traer los detalles de una factura
-          CURSOR c_detalles(p_codigo_fact factura.codigo_factura%TYPE) IS
+          CURSOR c_detalles(
+              p_codigo_fact factura.codigo_factura%TYPE
+          ) IS
               SELECT *
               FROM detalle
               WHERE codigo_factura = p_codigo_fact;
@@ -458,8 +463,10 @@ cells:
 
           LOOP
 
-              -- Cargar facturas por lotes de 5 registros
-              FETCH c_facturas BULK COLLECT INTO v_facturas LIMIT p_limite;
+              -- Cargar facturas por lotes
+              FETCH c_facturas
+              BULK COLLECT INTO v_facturas
+              LIMIT p_limite;
 
               -- Salir cuando no haya más datos
               EXIT WHEN v_facturas.COUNT = 0;
@@ -470,32 +477,55 @@ cells:
                   v_valor_total := 0;
 
                   -- Buscar detalles de la factura actual
-                  FOR v_detalle IN c_detalles(v_facturas(i).codigo_factura) LOOP
+                  FOR v_detalle IN c_detalles(
+                      v_facturas(i).codigo_factura
+                  ) LOOP
 
                       v_valor_total := v_valor_total +
-                                        (v_detalle.numero_unidades *
-                                         v_detalle.precio_unitario);
+                                        (
+                                          v_detalle.numero_unidades *
+                                          v_detalle.precio_unitario
+                                        );
 
                   END LOOP;
 
-                  -- Imprimir información
-                  DBMS_OUTPUT.PUT_LINE(' INFORMACION DE LA FACTURA ');
-                  DBMS_OUTPUT.PUT_LINE('codigo de la factura: ' ||
-                                        v_facturas(i).codigo_factura);
+                  -- Imprimir solo si el parámetro es TRUE
+                  IF p_outputline THEN
 
-                  DBMS_OUTPUT.PUT_LINE('fecha: ' ||
-                                        v_facturas(i).fecha);
+                      DBMS_OUTPUT.PUT_LINE(
+                          ' INFORMACION DE LA FACTURA '
+                      );
 
-                  DBMS_OUTPUT.PUT_LINE('codigo del cliente: ' ||
-                                        v_facturas(i).codigo_cliente);
+                      DBMS_OUTPUT.PUT_LINE(
+                          'codigo de la factura: ' ||
+                          v_facturas(i).codigo_factura
+                      );
 
-                  DBMS_OUTPUT.PUT_LINE('codigo del vendedor: ' ||
-                                        v_facturas(i).codigo_vendedor);
+                      DBMS_OUTPUT.PUT_LINE(
+                          'fecha: ' ||
+                          v_facturas(i).fecha
+                      );
 
-                  DBMS_OUTPUT.PUT_LINE('valor total: ' ||
-                                        v_valor_total);
+                      DBMS_OUTPUT.PUT_LINE(
+                          'codigo del cliente: ' ||
+                          v_facturas(i).codigo_cliente
+                      );
 
-                  DBMS_OUTPUT.PUT_LINE('----------------------------------');
+                      DBMS_OUTPUT.PUT_LINE(
+                          'codigo del vendedor: ' ||
+                          v_facturas(i).codigo_vendedor
+                      );
+
+                      DBMS_OUTPUT.PUT_LINE(
+                          'valor total: ' ||
+                          v_valor_total
+                      );
+
+                      DBMS_OUTPUT.PUT_LINE(
+                          '----------------------------------'
+                      );
+
+                  END IF;
 
               END LOOP;
 
@@ -537,6 +567,12 @@ cells:
       IS
       BEGIN
 
+          -- Limpiar datos antiguos
+          DELETE FROM detalle;
+          DELETE FROM factura;
+
+          COMMIT;
+
           -- Insertar facturas
           FOR i IN 1 .. p_num_facturas LOOP
 
@@ -561,7 +597,6 @@ cells:
           FOR f IN (
               SELECT codigo_factura
               FROM factura
-              ORDER BY codigo_factura
           ) LOOP
 
               FOR j IN 1 .. 10 LOOP
@@ -592,8 +627,105 @@ cells:
     languageId: oracle-sql
   - kind: 2
     value: |-
+      CREATE OR REPLACE PROCEDURE ejecutar_prueba(
+          p_facturas NUMBER,
+          p_limit NUMBER
+      )
+      IS
+
+          v_inicio NUMBER;
+          v_fin NUMBER;
+
       BEGIN
-          cargar_datos(1000);
+
+          -- Cargar datos
+          cargar_datos(p_facturas);
+
+          -- Tiempo inicial
+          v_inicio := DBMS_UTILITY.GET_TIME;
+
+          -- Ejecutar benchmark
+          bulk_collect_facturas(p_limit, FALSE);
+
+          -- Tiempo final
+          v_fin := DBMS_UTILITY.GET_TIME;
+
+          -- Mostrar resultado
+          DBMS_OUTPUT.PUT_LINE(
+              'FACTURAS: ' || p_facturas ||
+              ' | LIMIT: ' || p_limit ||
+              ' | TIEMPO: ' ||
+              TO_CHAR((v_fin - v_inicio)/100) ||
+              ' segundos'
+          );
+
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 1
+    value: "### Pruebas"
+    languageId: markdown
+  - kind: 2
+    value: |-
+      BEGIN
+
+          DBMS_OUTPUT.PUT_LINE(
+              '===== 1000 FACTURAS ====='
+          );
+
+          ejecutar_prueba(1000, 1);
+          ejecutar_prueba(1000, 5);
+          ejecutar_prueba(1000, 20);
+          ejecutar_prueba(1000, 100);
+
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
+
+          DBMS_OUTPUT.PUT_LINE(
+              '===== 10000 FACTURAS ====='
+          );
+
+          ejecutar_prueba(10000, 1);
+          ejecutar_prueba(10000, 5);
+          ejecutar_prueba(10000, 20);
+          ejecutar_prueba(10000, 100);
+
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
+
+          DBMS_OUTPUT.PUT_LINE(
+              '===== 100000 FACTURAS ====='
+          );
+
+          ejecutar_prueba(100000, 1);
+          ejecutar_prueba(100000, 5);
+          ejecutar_prueba(100000, 20);
+          ejecutar_prueba(100000, 100);
+
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
+
+          DBMS_OUTPUT.PUT_LINE(
+              '===== 100000 FACTURAS ====='
+          );
+
+          ejecutar_prueba(1000000, 1);
+          ejecutar_prueba(1000000, 5);
+          ejecutar_prueba(1000000, 20);
+          ejecutar_prueba(1000000, 100);
+
       END;
       /
     languageId: oracle-sql
