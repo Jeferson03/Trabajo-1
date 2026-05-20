@@ -18,7 +18,7 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
 WITH TARGET ACCURACY 90
@@ -35,7 +35,7 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
 WITH TARGET ACCURACY 90
@@ -52,7 +52,7 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
 WITH TARGET ACCURACY 90
@@ -69,7 +69,7 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
 WITH TARGET ACCURACY 90
@@ -86,7 +86,7 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
 WITH TARGET ACCURACY 90
@@ -103,7 +103,7 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
 WITH TARGET ACCURACY 90
@@ -120,7 +120,7 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
 WITH TARGET ACCURACY 90
@@ -137,7 +137,7 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
 WITH TARGET ACCURACY 90
@@ -158,7 +158,7 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
 WITH TARGET ACCURACY 70
@@ -175,7 +175,7 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
 WITH TARGET ACCURACY 70
@@ -192,7 +192,7 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
 WITH TARGET ACCURACY 70
@@ -209,7 +209,7 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
 WITH TARGET ACCURACY 70
@@ -226,7 +226,7 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
 WITH TARGET ACCURACY 70
@@ -243,7 +243,7 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
 WITH TARGET ACCURACY 70
@@ -260,7 +260,7 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
 WITH TARGET ACCURACY 70
@@ -277,7 +277,7 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
 WITH TARGET ACCURACY 70
@@ -298,7 +298,7 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
 WITH TARGET ACCURACY 50
@@ -315,7 +315,7 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
 WITH TARGET ACCURACY 50
@@ -332,7 +332,7 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
 WITH TARGET ACCURACY 50
@@ -349,7 +349,7 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
 WITH TARGET ACCURACY 50
@@ -366,7 +366,7 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
 WITH TARGET ACCURACY 50
@@ -383,7 +383,7 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
 WITH TARGET ACCURACY 50
@@ -400,7 +400,7 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
 WITH TARGET ACCURACY 50
@@ -417,7 +417,7 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
 WITH TARGET ACCURACY 50

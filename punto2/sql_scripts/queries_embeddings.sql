@@ -14,9 +14,9 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
-ORDER BY 2
+ORDER BY 4
 FETCH FIRST 10 ROWS ONLY;
 
 
@@ -30,9 +30,9 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
-ORDER BY 2
+ORDER BY 4
 FETCH FIRST 10 ROWS ONLY;
 
 
@@ -46,9 +46,9 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
-ORDER BY 2
+ORDER BY 4
 FETCH FIRST 10 ROWS ONLY;
 
 
@@ -62,9 +62,9 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
-ORDER BY 2
+ORDER BY 4
 FETCH FIRST 10 ROWS ONLY;
 
 
@@ -78,9 +78,9 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
-ORDER BY 2
+ORDER BY 4
 FETCH FIRST 10 ROWS ONLY;
 
 
@@ -94,9 +94,9 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
-ORDER BY 2
+ORDER BY 4
 FETCH FIRST 10 ROWS ONLY;
 
 
@@ -110,9 +110,9 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
-ORDER BY 2
+ORDER BY 4
 FETCH FIRST 10 ROWS ONLY;
 
 
@@ -126,8 +126,8 @@ BEGIN
 END;
 /
 
-SELECT n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
+SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
-ORDER BY 2
+ORDER BY 4
 FETCH FIRST 10 ROWS ONLY;
 
