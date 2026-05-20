@@ -21,8 +21,8 @@ END;
 SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
-WITH TARGET ACCURACY 90
-FETCH FIRST 10 ROWS ONLY;
+FETCH APPROXIMATE FIRST 10 ROWS ONLY
+WITH TARGET ACCURACY 90 PERCENT;
 
 
 -- Consulta: What's new on Global climate change policy updates? | Precisión: 90%
@@ -38,8 +38,8 @@ END;
 SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
-WITH TARGET ACCURACY 90
-FETCH FIRST 10 ROWS ONLY;
+FETCH APPROXIMATE FIRST 10 ROWS ONLY
+WITH TARGET ACCURACY 90 PERCENT;
 
 
 -- Consulta: Advances in renewable energy technology | Precisión: 90%
@@ -55,8 +55,8 @@ END;
 SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
-WITH TARGET ACCURACY 90
-FETCH FIRST 10 ROWS ONLY;
+FETCH APPROXIMATE FIRST 10 ROWS ONLY
+WITH TARGET ACCURACY 90 PERCENT;
 
 
 -- Consulta: Has Spain won the Davis cup for the second time in their history? | Precisión: 90%
@@ -72,8 +72,8 @@ END;
 SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
-WITH TARGET ACCURACY 90
-FETCH FIRST 10 ROWS ONLY;
+FETCH APPROXIMATE FIRST 10 ROWS ONLY
+WITH TARGET ACCURACY 90 PERCENT;
 
 
 -- Consulta: Show me news about football | Precisión: 90%
@@ -89,8 +89,8 @@ END;
 SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
-WITH TARGET ACCURACY 90
-FETCH FIRST 10 ROWS ONLY;
+FETCH APPROXIMATE FIRST 10 ROWS ONLY
+WITH TARGET ACCURACY 90 PERCENT;
 
 
 -- Consulta: Robotics learning and developments | Precisión: 90%
@@ -106,8 +106,8 @@ END;
 SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
-WITH TARGET ACCURACY 90
-FETCH FIRST 10 ROWS ONLY;
+FETCH APPROXIMATE FIRST 10 ROWS ONLY
+WITH TARGET ACCURACY 90 PERCENT;
 
 
 -- Consulta: News abouts Argentina | Precisión: 90%
@@ -123,8 +123,8 @@ END;
 SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
-WITH TARGET ACCURACY 90
-FETCH FIRST 10 ROWS ONLY;
+FETCH APPROXIMATE FIRST 10 ROWS ONLY
+WITH TARGET ACCURACY 90 PERCENT;
 
 
 -- Consulta: Happy or fun news | Precisión: 90%
@@ -140,8 +140,8 @@ END;
 SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
-WITH TARGET ACCURACY 90
-FETCH FIRST 10 ROWS ONLY;
+FETCH APPROXIMATE FIRST 10 ROWS ONLY
+WITH TARGET ACCURACY 90 PERCENT;
 
 -- ##############################
 -- PRUEBAS CON ACCURACY: 70%
@@ -161,8 +161,8 @@ END;
 SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
-WITH TARGET ACCURACY 70
-FETCH FIRST 10 ROWS ONLY;
+FETCH APPROXIMATE FIRST 10 ROWS ONLY
+WITH TARGET ACCURACY 70 PERCENT;
 
 
 -- Consulta: What's new on Global climate change policy updates? | Precisión: 70%
@@ -178,8 +178,8 @@ END;
 SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
-WITH TARGET ACCURACY 70
-FETCH FIRST 10 ROWS ONLY;
+FETCH APPROXIMATE FIRST 10 ROWS ONLY
+WITH TARGET ACCURACY 70 PERCENT;
 
 
 -- Consulta: Advances in renewable energy technology | Precisión: 70%
@@ -195,8 +195,8 @@ END;
 SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
-WITH TARGET ACCURACY 70
-FETCH FIRST 10 ROWS ONLY;
+FETCH APPROXIMATE FIRST 10 ROWS ONLY
+WITH TARGET ACCURACY 70 PERCENT;
 
 
 -- Consulta: Has Spain won the Davis cup for the second time in their history? | Precisión: 70%
@@ -212,8 +212,8 @@ END;
 SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
-WITH TARGET ACCURACY 70
-FETCH FIRST 10 ROWS ONLY;
+FETCH APPROXIMATE FIRST 10 ROWS ONLY
+WITH TARGET ACCURACY 70 PERCENT;
 
 
 -- Consulta: Show me news about football | Precisión: 70%
@@ -229,8 +229,8 @@ END;
 SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
-WITH TARGET ACCURACY 70
-FETCH FIRST 10 ROWS ONLY;
+FETCH APPROXIMATE FIRST 10 ROWS ONLY
+WITH TARGET ACCURACY 70 PERCENT;
 
 
 -- Consulta: Robotics learning and developments | Precisión: 70%
@@ -246,8 +246,8 @@ END;
 SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
-WITH TARGET ACCURACY 70
-FETCH FIRST 10 ROWS ONLY;
+FETCH APPROXIMATE FIRST 10 ROWS ONLY
+WITH TARGET ACCURACY 70 PERCENT;
 
 
 -- Consulta: News abouts Argentina | Precisión: 70%
@@ -263,8 +263,8 @@ END;
 SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
-WITH TARGET ACCURACY 70
-FETCH FIRST 10 ROWS ONLY;
+FETCH APPROXIMATE FIRST 10 ROWS ONLY
+WITH TARGET ACCURACY 70 PERCENT;
 
 
 -- Consulta: Happy or fun news | Precisión: 70%
@@ -280,8 +280,8 @@ END;
 SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
-WITH TARGET ACCURACY 70
-FETCH FIRST 10 ROWS ONLY;
+FETCH APPROXIMATE FIRST 10 ROWS ONLY
+WITH TARGET ACCURACY 70 PERCENT;
 
 -- ##############################
 -- PRUEBAS CON ACCURACY: 50%
@@ -301,8 +301,8 @@ END;
 SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
-WITH TARGET ACCURACY 50
-FETCH FIRST 10 ROWS ONLY;
+FETCH APPROXIMATE FIRST 10 ROWS ONLY
+WITH TARGET ACCURACY 50 PERCENT;
 
 
 -- Consulta: What's new on Global climate change policy updates? | Precisión: 50%
@@ -318,8 +318,8 @@ END;
 SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
-WITH TARGET ACCURACY 50
-FETCH FIRST 10 ROWS ONLY;
+FETCH APPROXIMATE FIRST 10 ROWS ONLY
+WITH TARGET ACCURACY 50 PERCENT;
 
 
 -- Consulta: Advances in renewable energy technology | Precisión: 50%
@@ -335,8 +335,8 @@ END;
 SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
-WITH TARGET ACCURACY 50
-FETCH FIRST 10 ROWS ONLY;
+FETCH APPROXIMATE FIRST 10 ROWS ONLY
+WITH TARGET ACCURACY 50 PERCENT;
 
 
 -- Consulta: Has Spain won the Davis cup for the second time in their history? | Precisión: 50%
@@ -352,8 +352,8 @@ END;
 SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
-WITH TARGET ACCURACY 50
-FETCH FIRST 10 ROWS ONLY;
+FETCH APPROXIMATE FIRST 10 ROWS ONLY
+WITH TARGET ACCURACY 50 PERCENT;
 
 
 -- Consulta: Show me news about football | Precisión: 50%
@@ -369,8 +369,8 @@ END;
 SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
-WITH TARGET ACCURACY 50
-FETCH FIRST 10 ROWS ONLY;
+FETCH APPROXIMATE FIRST 10 ROWS ONLY
+WITH TARGET ACCURACY 50 PERCENT;
 
 
 -- Consulta: Robotics learning and developments | Precisión: 50%
@@ -386,8 +386,8 @@ END;
 SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
-WITH TARGET ACCURACY 50
-FETCH FIRST 10 ROWS ONLY;
+FETCH APPROXIMATE FIRST 10 ROWS ONLY
+WITH TARGET ACCURACY 50 PERCENT;
 
 
 -- Consulta: News abouts Argentina | Precisión: 50%
@@ -403,8 +403,8 @@ END;
 SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
-WITH TARGET ACCURACY 50
-FETCH FIRST 10 ROWS ONLY;
+FETCH APPROXIMATE FIRST 10 ROWS ONLY
+WITH TARGET ACCURACY 50 PERCENT;
 
 
 -- Consulta: Happy or fun news | Precisión: 50%
@@ -420,6 +420,6 @@ END;
 SELECT n.idnoticia, n.titulo, n.texto, VECTOR_DISTANCE(n.embedding, q.emb) AS distancia
 FROM noticia n, query_embedding q
 ORDER BY VECTOR_DISTANCE(n.embedding, q.emb) 
-WITH TARGET ACCURACY 50
-FETCH FIRST 10 ROWS ONLY;
+FETCH APPROXIMATE FIRST 10 ROWS ONLY
+WITH TARGET ACCURACY 50 PERCENT;
 
