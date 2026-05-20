@@ -638,9 +638,6 @@ cells:
 
       BEGIN
 
-          -- Cargar datos
-          cargar_datos(p_facturas);
-
           -- Tiempo inicial
           v_inicio := DBMS_UTILITY.GET_TIME;
 
@@ -673,6 +670,8 @@ cells:
               '===== 1000 FACTURAS ====='
           );
 
+          cargar_datos(1000);
+
           ejecutar_prueba(1000, 1);
           ejecutar_prueba(1000, 5);
           ejecutar_prueba(1000, 20);
@@ -688,6 +687,8 @@ cells:
           DBMS_OUTPUT.PUT_LINE(
               '===== 10000 FACTURAS ====='
           );
+
+          cargar_datos(10000);
 
           ejecutar_prueba(10000, 1);
           ejecutar_prueba(10000, 5);
@@ -705,6 +706,8 @@ cells:
               '===== 100000 FACTURAS ====='
           );
 
+          cargar_datos(100000);
+
           ejecutar_prueba(100000, 1);
           ejecutar_prueba(100000, 5);
           ejecutar_prueba(100000, 20);
@@ -718,8 +721,10 @@ cells:
       BEGIN
 
           DBMS_OUTPUT.PUT_LINE(
-              '===== 100000 FACTURAS ====='
+              '===== 1000000 FACTURAS ====='
           );
+
+          cargar_datos(1000000);
 
           ejecutar_prueba(1000000, 1);
           ejecutar_prueba(1000000, 5);
