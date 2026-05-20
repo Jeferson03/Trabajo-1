@@ -1,0 +1,14 @@
+===== 1000 FACTURAS =====
+FACTURAS: 1000 | TIEMPO: 0.74 segundos
+
+===== 3000 FACTURAS =====
+FACTURAS: 1000 | TIEMPO: 3.2 segundos
+
+===== 5000 FACTURAS =====
+FACTURAS: 1000 | TIEMPO: 9.66 segundos
+
+===== 7000 FACTURAS =====
+FACTURAS: 1000 | TIEMPO: error  buffer overflow, limit of 1000000 bytes
+
+===== 10000 FACTURAS =====
+FACTURAS: 1000 | TIEMPO: error  buffer overflow, limit of 1000000 bytes
