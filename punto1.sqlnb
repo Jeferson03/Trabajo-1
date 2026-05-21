@@ -427,11 +427,13 @@ cells:
   - kind: 1
     value: "## Punto B"
     languageId: markdown
+  - kind: 1
+    value: "### Funcion Bulk Collect"
+    languageId: markdown
   - kind: 2
     value: |-
       CREATE OR REPLACE PROCEDURE bulk_collect_facturas(
-          p_limite     IN PLS_INTEGER DEFAULT 5,
-          p_outputline IN BOOLEAN DEFAULT TRUE
+          p_limite     IN PLS_INTEGER DEFAULT 5
       )
       AS
 
@@ -490,42 +492,42 @@ cells:
                   END LOOP;
 
                   -- Imprimir solo si el parámetro es TRUE
-                  IF p_outputline THEN
+              
 
-                      DBMS_OUTPUT.PUT_LINE(
-                          ' INFORMACION DE LA FACTURA '
-                      );
+                  DBMS_OUTPUT.PUT_LINE(
+                      ' INFORMACION DE LA FACTURA '
+                  );
 
-                      DBMS_OUTPUT.PUT_LINE(
-                          'codigo de la factura: ' ||
-                          v_facturas(i).codigo_factura
-                      );
+                  DBMS_OUTPUT.PUT_LINE(
+                      'codigo de la factura: ' ||
+                      v_facturas(i).codigo_factura
+                  );
 
-                      DBMS_OUTPUT.PUT_LINE(
-                          'fecha: ' ||
-                          v_facturas(i).fecha
-                      );
+                  DBMS_OUTPUT.PUT_LINE(
+                      'fecha: ' ||
+                      v_facturas(i).fecha
+                  );
 
-                      DBMS_OUTPUT.PUT_LINE(
-                          'codigo del cliente: ' ||
-                          v_facturas(i).codigo_cliente
-                      );
+                  DBMS_OUTPUT.PUT_LINE(
+                      'codigo del cliente: ' ||
+                      v_facturas(i).codigo_cliente
+                  );
 
-                      DBMS_OUTPUT.PUT_LINE(
-                          'codigo del vendedor: ' ||
-                          v_facturas(i).codigo_vendedor
-                      );
+                  DBMS_OUTPUT.PUT_LINE(
+                      'codigo del vendedor: ' ||
+                      v_facturas(i).codigo_vendedor
+                  );
 
-                      DBMS_OUTPUT.PUT_LINE(
-                          'valor total: ' ||
-                          v_valor_total
-                      );
+                  DBMS_OUTPUT.PUT_LINE(
+                      'valor total: ' ||
+                      v_valor_total
+                  );
 
-                      DBMS_OUTPUT.PUT_LINE(
-                          '----------------------------------'
-                      );
+                  DBMS_OUTPUT.PUT_LINE(
+                      '----------------------------------'
+                  );
 
-                  END IF;
+                  
 
               END LOOP;
 
@@ -536,14 +538,8 @@ cells:
       END;
       /
     languageId: oracle-sql
-  - kind: 2
-    value: |-
-      BEGIN
-          bulk_collect_facturas(10);
-      END;
-    languageId: oracle-sql
   - kind: 1
-    value: "## Limpiando datos"
+    value: "### Limpiando datos"
     languageId: markdown
   - kind: 2
     value: |-
@@ -557,7 +553,7 @@ cells:
       CREATE SEQUENCE seq_detalle START WITH 1;
     languageId: oracle-sql
   - kind: 1
-    value: "## Cargando datos aleatorios"
+    value: "### Funcion para cargar N facturas aleatorias con 10*N detalles"
     languageId: markdown
   - kind: 2
     value: |-
@@ -626,41 +622,86 @@ cells:
       /
     languageId: oracle-sql
   - kind: 2
+    value: DROP TABLE benchmark_resultados;
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      CREATE TABLE benchmark_resultados (
+          id            NUMBER GENERATED ALWAYS AS IDENTITY,
+          facturas      NUMBER,
+          limite        NUMBER,
+          tiempo_seg    NUMBER,
+          fecha_ejec    DATE DEFAULT SYSDATE
+      );
+    languageId: oracle-sql
+  - kind: 1
+    value: >-
+      ### Funcion para realizar la pruebas con los distintos parametros
+
+      - p_facturas para llenar las tablas con N cantidad de facturas
+
+      - p_limit para el LIMIT del bulk collect
+
+      - enable_output para determinar si es necesario imprimir, cuando son mucha
+      cantidad de datos ocurre overflow y no se alcanza a ejecutar
+    languageId: markdown
+  - kind: 2
     value: |-
       CREATE OR REPLACE PROCEDURE ejecutar_prueba(
           p_facturas NUMBER,
           p_limit NUMBER
       )
       IS
-
           v_inicio NUMBER;
           v_fin NUMBER;
-
+          v_tiempo NUMBER;
       BEGIN
-
           -- Tiempo inicial
           v_inicio := DBMS_UTILITY.GET_TIME;
 
           -- Ejecutar benchmark
-          bulk_collect_facturas(p_limit, FALSE);
+          bulk_collect_facturas(p_limit);
 
           -- Tiempo final
           v_fin := DBMS_UTILITY.GET_TIME;
+
+          v_tiempo := (v_fin - v_inicio) / 100;
 
           -- Mostrar resultado
           DBMS_OUTPUT.PUT_LINE(
               'FACTURAS: ' || p_facturas ||
               ' | LIMIT: ' || p_limit ||
-              ' | TIEMPO: ' ||
-              TO_CHAR((v_fin - v_inicio)/100) ||
+              ' | TIEMPO: ' || TO_CHAR(v_tiempo) ||
               ' segundos'
           );
+
+          INSERT INTO benchmark_resultados (
+              facturas,
+              limite,
+              tiempo_seg
+          )
+          VALUES (
+              p_facturas,
+              p_limit,
+              v_tiempo
+          );
+
+          COMMIT;
 
       END;
       /
     languageId: oracle-sql
   - kind: 1
     value: "### Pruebas"
+    languageId: markdown
+  - kind: 1
+    value: "#### Pruebas"
+    languageId: markdown
+  - kind: 2
+    value: SET SERVEROUTPUT ON SIZE UNLIMITED;
+    languageId: oracle-sql
+  - kind: 1
+    value: "##### Prueba con 1000 facturas"
     languageId: markdown
   - kind: 2
     value: |-
@@ -672,14 +713,172 @@ cells:
 
           cargar_datos(1000);
 
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
           ejecutar_prueba(1000, 1);
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
           ejecutar_prueba(1000, 5);
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
           ejecutar_prueba(1000, 20);
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
           ejecutar_prueba(1000, 100);
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 1
+    value: "##### Prueba con 3000 facturas"
+    languageId: markdown
+  - kind: 2
+    value: |-
+      BEGIN
+
+          DBMS_OUTPUT.PUT_LINE(
+              '===== 3000 FACTURAS ====='
+          );
+
+          cargar_datos(3000);
 
       END;
       /
     languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
+          ejecutar_prueba(3000, 1);
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
+          ejecutar_prueba(3000, 5);
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
+          ejecutar_prueba(3000, 20);
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
+          ejecutar_prueba(3000, 100);
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 1
+    value: "##### Prueba con 5000 facturas"
+    languageId: markdown
+  - kind: 2
+    value: |-
+      BEGIN
+
+          DBMS_OUTPUT.PUT_LINE(
+              '===== 5000 FACTURAS ====='
+          );
+
+          cargar_datos(5000);
+
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
+          ejecutar_prueba(5000, 1);
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
+          ejecutar_prueba(5000, 5);
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
+          ejecutar_prueba(5000, 20);
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
+          ejecutar_prueba(5000, 100);
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 1
+    value: "##### Prueba con 7000 facturas"
+    languageId: markdown
+  - kind: 2
+    value: |-
+      BEGIN
+
+          DBMS_OUTPUT.PUT_LINE(
+              '===== 7000 FACTURAS ====='
+          );
+
+          cargar_datos(7000);
+
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
+          ejecutar_prueba(7000, 1);
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
+          ejecutar_prueba(7000, 5);
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
+          ejecutar_prueba(7000, 20);
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
+          ejecutar_prueba(7000, 100);
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 1
+    value: "##### Prueba con 10000 facturas"
+    languageId: markdown
   - kind: 2
     value: |-
       BEGIN
@@ -690,47 +889,34 @@ cells:
 
           cargar_datos(10000);
 
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
           ejecutar_prueba(10000, 1);
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
           ejecutar_prueba(10000, 5);
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
           ejecutar_prueba(10000, 20);
+      END;
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      BEGIN
           ejecutar_prueba(10000, 100);
-
-      END;
-      /
-    languageId: oracle-sql
-  - kind: 2
-    value: |-
-      BEGIN
-
-          DBMS_OUTPUT.PUT_LINE(
-              '===== 100000 FACTURAS ====='
-          );
-
-          cargar_datos(100000);
-
-          ejecutar_prueba(100000, 1);
-          ejecutar_prueba(100000, 5);
-          ejecutar_prueba(100000, 20);
-          ejecutar_prueba(100000, 100);
-
-      END;
-      /
-    languageId: oracle-sql
-  - kind: 2
-    value: |-
-      BEGIN
-
-          DBMS_OUTPUT.PUT_LINE(
-              '===== 1000000 FACTURAS ====='
-          );
-
-          cargar_datos(1000000);
-
-          ejecutar_prueba(1000000, 1);
-          ejecutar_prueba(1000000, 5);
-          ejecutar_prueba(1000000, 20);
-          ejecutar_prueba(1000000, 100);
-
       END;
       /
     languageId: oracle-sql
